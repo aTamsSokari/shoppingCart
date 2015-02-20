@@ -1,70 +1,50 @@
-$('.item')
-  .bind('dragstart', function (e) {
-    this.style.opacity = '0.6';  // this / e.target is the source node.
-    e.dataTransfer.setData('text', this.id);
-    $('h2').fadeIn('fast');
-  })
-  .hover(
-    function () { $('div', this).fadeIn(); }, 
+// JavaScript source code
+var items = document.querySelectorAll('.item');
+var cart = document.getElementById('cartItems');
+
+document.addEventListener('dragstart', function (e) {
+  items = e.target;
+  e.target.style.opacity = '0.6';  // this / e.target is the source node.
+  e.target.dataTransfer.setData('text/html', this.innerHTML);
+  e.target.dataTransfer.effectAllowed = "move";
+  $('h2').fadeIn('fast');
+  $(e.target).hover(
+    function () { $('div', this).fadeIn(); },
     function () { $('div', this).fadeOut(); }
-    );
+  );
+}, false);
 
-$('#cartItems')
-  .bind('dragover', function (e) {
-    e.preventDefault();
-  })
-  .bind('dragenter', function (e) {
-    e.preventDefault();
-  })
-  .bind('drop', function (e) {
-    var id = e.dataTransfer.getData('text'),
-        item = $('#' + id),
-        cartList = $("#cartItems ul"),
-        total = $("#total span"),
-        prevCartItem = null,
-        emptyCart = (function () {
-          var list = $('li', cartList),
-            l = list.length,
-            i;
+document.addEventListener('dragend', function (e) {
+  e.target.style.opacity = '';
+  e.target.style.fadeOut = 'fast';
+}, false);
 
-          for (i = 0; i < l; i++) {
-            var temp = $(l[i]);
-            if (temp.data('id') === id) {
-              prevCartItem = temp;
-              return false;
-            }
-          }
-          return true;
-        }()),
-        quanInStore, quanInCart, quanLeft;
+document.addEventListener('dragover', function (e) {
+  e.preventDefault();
+}, false);
 
-    $("h2").fadeOut('fast');
+document.addEventListener('dragenter', function (e) {
+  if(event.target.className == 'dropzone') {
+    event.target.style.backgroundColor = 'brown';
+  }
+}, false);
 
-    if (emptyCart) {
-      prevCartItem = $('<li />', {
-        text: $('p:first', item).text(),
-        data: { id: id }
-      }).prepend($('<span />', {
-        'class': 'quantity',
-        text: '0'
-      })).prepend($('<span />', {
-        'class': 'price',
-        text: price
-      })).appendTo(cartList);
-    }
+document.addEventListener("dragleave", function (event) {
+  // reset background of potential drop target when the draggable element leaves it
+  if (event.target.className == "dropzone") {
+    event.target.style.background = "";
+  }
 
-    quanInStore = $('p:last span', item);
-    quanLeft = parseInt(quanInStore.text(), 10) - 1;
-    quanInCart = $('.quantity', prevCartItem);
-    quanInCart.text(parseInt(quanInCart.text(), 10) + 1);
-    quanInStore.text(quanLeft);
+}, false);
 
-    if (quanLeft === 0) {
-      item.fadeOut('fast');
-    }
+document.addEventListener("drop", function (event) {
+  // prevent default action (open as link for some elements)
+  event.preventDefault();
+  // move dragged elem to the selected drop target
+  if (event.target.className== "dropzone" ) {
+    event.target.style.background = "";
+    items.parentNode.removeChild(items);
+    event.target.appendChild(items);
+  }
 
-    total.text((parseFloat(total.text(), 10)));
-
-    e.stopPropagation();
-    return false;
-  });
+}, false);
