@@ -21,6 +21,9 @@ document.addEventListener('dragend', function (e) {
 
 document.addEventListener('dragover', function (e) {
   e.preventDefault();
+  if (event.target.className == 'dropzone') {
+    event.target.style.backgroundColor = 'burlywood';
+  }
 }, false);
 
 document.addEventListener('dragenter', function (e) {
@@ -34,7 +37,6 @@ document.addEventListener("dragleave", function (event) {
   if (event.target.className == "dropzone") {
     event.target.style.background = "";
   }
-
 }, false);
 
 document.addEventListener("drop", function (event) {
@@ -46,5 +48,4 @@ document.addEventListener("drop", function (event) {
     items.parentNode.removeChild(items);
     event.target.appendChild(items);
   }
-
 }, false);
