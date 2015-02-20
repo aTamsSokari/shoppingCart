@@ -7,11 +7,6 @@ document.addEventListener('dragstart', function (e) {
   e.target.style.opacity = '0.6';  // this / e.target is the source node.
   e.target.dataTransfer.setData('text/html', this.innerHTML);
   e.target.dataTransfer.effectAllowed = "move";
-  $('h2').fadeIn('fast');
-  $(e.target).hover(
-    function () { $('div', this).fadeIn(); },
-    function () { $('div', this).fadeOut(); }
-  );
 }, false);
 
 document.addEventListener('dragend', function (e) {
@@ -42,6 +37,7 @@ document.addEventListener("dragleave", function (e) {
 document.addEventListener("drop", function (e) {
   // prevent default action (open as link for some elements)
   e.preventDefault();
+  e.dataTransfer.getData('text/html')
   // move dragged elem to the selected drop target
   if (e.target.className== "dropzone" ) {
     e.target.style.background = "";
