@@ -21,31 +21,31 @@ document.addEventListener('dragend', function (e) {
 
 document.addEventListener('dragover', function (e) {
   e.preventDefault();
-  if (event.target.className == 'dropzone') {
-    event.target.style.backgroundColor = 'burlywood';
+  if (e.target.className == 'dropzone') {
+    e.target.style.backgroundColor = 'burlywood';
   }
 }, false);
 
 document.addEventListener('dragenter', function (e) {
-  if(event.target.className == 'dropzone') {
-    event.target.style.backgroundColor = 'brown';
+  if(e.target.className == 'dropzone') {
+    e.target.style.backgroundColor = 'brown';
   }
 }, false);
 
-document.addEventListener("dragleave", function (event) {
+document.addEventListener("dragleave", function (e) {
   // reset background of potential drop target when the draggable element leaves it
-  if (event.target.className == "dropzone") {
-    event.target.style.background = "";
+  if (e.target.className == "dropzone") {
+    e.target.style.background = "";
   }
 }, false);
 
-document.addEventListener("drop", function (event) {
+document.addEventListener("drop", function (e) {
   // prevent default action (open as link for some elements)
-  event.preventDefault();
+  e.preventDefault();
   // move dragged elem to the selected drop target
-  if (event.target.className== "dropzone" ) {
-    event.target.style.background = "";
+  if (e.target.className== "dropzone" ) {
+    e.target.style.background = "";
     items.parentNode.removeChild(items);
-    event.target.appendChild(items);
+    e.target.appendChild(items);
   }
 }, false);
